@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Exotel API Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    body { font-family: sans-serif; padding: 20px; max-width: 600px; margin: auto; }
+    input, textarea, button { width: 100%; margin-top: 10px; padding: 10px; font-size: 1rem; }
+    #status { margin-top: 15px; color: green; }
+  </style>
+</head>
+<body>
+  <h2>Send SMS via Exotel API</h2>
+  <input type="text" id="to" placeholder="Recipient Number (e.g. +91XXXXXXXXXX)" required />
+  <textarea id="message" placeholder="Type your message here..." required></textarea>
+  <button onclick="sendSMS()">Send SMS</button>
+  <div id="status"></div>
+
+  <script>
+    async function sendSMS() {
+      const to = document.getElementById('to').value;
+      const message = document.getElementById('message').value;
+      const res = await fetch('/api/send-sms', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ to, message })
+      });
+      const data = await res.json();
+      document.getElementById('status').innerText = data.message || 'Sent!';
+    }
+  </script>
+</body>
+</html>
